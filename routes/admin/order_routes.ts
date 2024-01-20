@@ -4,6 +4,6 @@ import { showAllOrder, specificOrder } from '../../controller/admin/order_contro
 const orderRoute = express.Router();
 
 orderRoute.get('/showall-order', tokenAdmin, showAllOrder);
-orderRoute.get('show-order', tokenAdmin, specificOrder);
+orderRoute.get('/show-order', tokenAdmin, specificOrder);
 
 export default orderRoute;

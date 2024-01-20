@@ -4,6 +4,6 @@ import { showAllReview, showReview } from '../../controller/admin/review_control
 const reviewRoute = express.Router();
 
 reviewRoute.get('/showall-review', tokenAdmin, showAllReview);
-reviewRoute.get('/show-cart', tokenAdmin, showReview);
+reviewRoute.get('/show-review', tokenAdmin, showReview);
 
 export default reviewRoute

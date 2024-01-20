@@ -136,7 +136,7 @@ export const deleteProfile = async (req: Request,res: Response) => {
                 isDelete: true
             }
         )
-        res.json({user, message: "profile deleted"});
+        res.json({user, message: "profile deleted"})
     } catch (err) {
         console.log(err);
         res.status(500).json({message:"Internal Server Error"});

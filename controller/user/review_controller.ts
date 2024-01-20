@@ -15,10 +15,10 @@ export const addReivew = async (req:Request,res:Response) => {
         // const {cartItem, title, rating, productImage} = req.body;
 
         let isUser = await reviewService.getReview({user: req.user._id, isDelete: false});
-        // if(!isUser){
-        //     return res.json({message: "You are not login"});
-        // }
-        console.log(req.user._id);
+        if(!isUser){
+            return res.json({message: "You are not login"});
+        }
+        // console.log(req.user._id);
         
         let isProduct = await reviewService.getProduct({_id: req.body.cartItem, isDelete: false});
         if(!isProduct){
@@ -35,12 +35,12 @@ export const addReivew = async (req:Request,res:Response) => {
             productImage: productpath,
         })
 
-        let totalScore = await reviewService.getAllReview({isDelete: false});
-        let reviewLength = totalScore.length;
-        let rat = totalScore.map((item:any) => ({avgrating: item.rating}))
-        let total = rat.reduce((total: number,val: any)=>total += (val.avgrating),0);
-        let avg = total/reviewLength;
-        console.log(avg);
+        let totalScore: any = await reviewService.getAllReview({isDelete: false});
+        let reviewLength: number = totalScore.length;
+        let rat: any = totalScore.map((item:any) => ({avgrating: item.rating}))
+        let total: number = rat.reduce((total: number,val: any)=>total += (val.avgrating),0);
+        let avg: number = total/reviewLength;
+        // console.log(avg);
         review.save();
         res.json({review, message: "Your review was added"});
     } catch (err) {
@@ -51,7 +51,7 @@ export const addReivew = async (req:Request,res:Response) => {
 
 export const getAllReview = async (req:Request,res:Response) => {
     try {
-        let allReview = await reviewService.getProduct({user: req.user._id, isDelete: false});
+        let allReview = await reviewService.addPopulate({user: req.user._id, isDelete: false});
         let review = allReview.map((item: any) => ({
             _id : item._id ,
             user: req.user._id,
@@ -70,7 +70,7 @@ export const getAllReview = async (req:Request,res:Response) => {
 export const specificReivew = async (req:Request,res:Response) => {
     try {
         // const {cartItem} = req.body;
-        let allReview = await reviewService.getProduct({_id: req.body.cartItem, user: req.user._id, isDelete: false});
+        let allReview = await reviewService.addPopulate({_id: req.body.cartItem, user: req.user._id, isDelete: false});
         if(!allReview){
             return res.json({message: "user does not added review"});
         }
