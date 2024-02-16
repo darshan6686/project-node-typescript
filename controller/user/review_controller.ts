@@ -13,12 +13,6 @@ declare global {
 export const addReivew = async (req:Request,res:Response) => {
     try {
         // const {cartItem, title, rating, productImage} = req.body;
-
-        let isUser = await reviewService.getReview({user: req.user._id, isDelete: false});
-        if(!isUser){
-            return res.json({message: "You are not login"});
-        }
-        // console.log(req.user._id);
         
         let isProduct = await reviewService.getProduct({_id: req.body.cartItem, isDelete: false});
         if(!isProduct){

@@ -17,11 +17,11 @@ export const signUp = async (req:Request,res: Response) => {
         let {name, email, password, confirmPassword, profileImage, isAdmin} = req.body;
         let user = await userService.getUser({email: req.body.email, isDelete: false});
         if(user){
-            return res.json({messge: "Email already exists."})
+            return res.status(500).json({messge: "Email already exists."})
         }
 
         if(password !== confirmPassword){
-            return res.json({messge: "Passwords do not match."});
+            return res.status(500).json({messge: "Passwords do not match."});
         }
         const hashedPassword = await bcryptjs.hash(confirmPassword, 8);
 
@@ -49,11 +49,11 @@ export const login = async (req: Request,res: Response) => {
         const {email, password} = req.body;
         let user = await userService.getUser({email: req.body.email, isDelete: false});
         if(!user){
-            return res.json({message:"User does not exist."});
+            return res.status(500).json({message:"User does not exist."});
         }
         let checkPassword = await bcryptjs.compare(password, user.password);
         if(!checkPassword){
-            return res.json({message:"Invalid Password."});
+            return res.status(500).json({message:"Invalid Password."});
         }
         let playload = {
             userId: user._id
@@ -85,10 +85,10 @@ export const changePassword = async (req: Request,res: Response) => {
         let checkPassword = await bcryptjs.compare(password, req.user.password);
         
         if (!checkPassword) {
-            return res.json({message: 'Incorrect current password'})
+            return res.status(500).json({message: 'Incorrect current password'})
         }
         if (newPassword !== confirmPassword) {
-            return res.json({message:'New password and Confirm password do not match.'})
+            return res.status(500).json({message:'New password and Confirm password do not match.'})
         }
         let hashedPassword = await bcryptjs.hash(confirmPassword, 10);
         let user = await userService.updateUser(
