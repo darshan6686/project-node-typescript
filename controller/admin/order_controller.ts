@@ -17,7 +17,7 @@ export const specificOrder = async (req:Request,res: Response) => {
         // const {orderId} = req.body;
         let order = await orderService.getOneOrder({_id: req.body.orderId , isDelete: false});
         if(!order){
-            return res.json({message:"your order not found"});
+            return res.status(500).json({message:"your order not found"});
         }
         res.json(order);
     } catch (err) {

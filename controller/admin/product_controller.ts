@@ -16,7 +16,7 @@ export const createProduct = async (req: Request ,res: Response) => {
         let {productName, productPrice, role, productImage} = req.body;
         let product = await productService.getProduct({productName: req.body.productName, isDelete: false});
         if(product){
-            return res.json({message: "This Product already exists."});
+            return res.status(500).json({message: "This Product already exists."});
         }
 
         let productpath;
@@ -51,7 +51,7 @@ export const specificProduct = async (req: Request,res: Response) => {
         const {cartItem} = req.body;
         let product = await productService.getProduct({_id: cartItem, isDelete: false});
         if(!product){
-            return res.json({message: "No Such Product Found"});
+            return res.status(500).json({message: "No Such Product Found"});
         }
         res.json(product);
     } catch (err) {
@@ -65,7 +65,7 @@ export const updateProduct = async (req: Request,res: Response) => {
         let {productId, productName, productPrice, role, productImage} = req.body;
         let isAdmin = await productService.getProduct({admin: req.admin._id, isDelete: false});
         if(!isAdmin){
-            return res.json({message: "you are not admin"})
+            return res.status(500).json({message: "you are not admin"})
         }
         let product = await productService.getProduct({_id: req.body.productId, isDelete: false});
         if(!product){
@@ -97,7 +97,7 @@ export const deleteProduct = async (req: Request,res: Response) => {
         let {productId} = req.body;
         let product = await productService.getProduct({_id: productId,isDelete: false});
         if(!product){
-            return res.json({message: "No Such Product Found"});
+            return res.status(500).json({message: "No Such Product Found"});
         }
         product = await productService.updateProduct(
             productId,

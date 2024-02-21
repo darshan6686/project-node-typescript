@@ -26,7 +26,7 @@ export const showReview = async (req:Request,res:Response) => {
     try {
         let allReview = await reviewService.addPopulate({_id: req.body.reviewId, isDelete: false});
         if(!allReview){
-            return res.json({message: "review not found!"});
+            return res.status(500).json({message: "review not found!"});
         }
         let review = allReview.map((item: any) => ({
             _id : item._id ,

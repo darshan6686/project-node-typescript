@@ -16,7 +16,7 @@ export const addToCart = async (req: Request,res: Response) => {
         // const { cartItem,quntity} = req.body;
         let isCart = await cartService.getCart({cartItem: req.body.cartItem, user: req.user._id, isDelete: false});
         if(isCart){
-            return res.json({message: "This product is already added in cart"});
+            return res.status(500).json({message: "This product is already added in cart"});
         }
 
         isCart = await cartService.createCart({
@@ -56,7 +56,7 @@ export const specificCart = async (req: Request,res: Response) => {
         const {cartItem} = req.body;
         let cart = await cartService.getAllCart({cartItem: req.body.cartItem, isDelete: false});
         if(!cart){
-            return res.json({message:"No data found"})
+            return res.status(500).json({message:"No data found"})
         }
         let allcart = cart.map((item: any) => ({
             _id : item._id ,
@@ -81,7 +81,7 @@ export const updateCart = async (req:Request,res: Response) => {
         let cart = await cartService.getCart({user: req.user._id, isDelete: false});
         cart = await cartService.getCart({cartItem: req.body.cartItem, isDelete: false});
         if(!cart){
-            return res.json({message: "This product not found"});
+            return res.status(500).json({message: "This product not found"});
         }
         console.log(req.body);
         
@@ -106,7 +106,7 @@ export const deleteCart = async (req:Request,res:Response) => {
         let isCart = await cartService.getCart({user: req.user._id, isDelete: false});
         isCart = await cartService.getCart({cartItem: cartItem, isDelete: false});
         if(!isCart){
-            return res.json({message: 'No data found!'})
+            return res.status(500).json({message: 'No data found!'})
         }
         isCart = await cartService.updateCart(
             req.body.cartItem,

@@ -17,7 +17,7 @@ export const specificProduct = async (req: Request,res: Response) => {
         const {cartItem} = req.body;
         let product = await productService.getProduct({_id: req.body.cartItem, isDelete: false});
         if(!product){
-            return res.json({message:"This Product Is Not Found!"})
+            return res.status(500).json({message:"This Product Is Not Found!"})
         }
         res.json(product);
     } catch (err) {

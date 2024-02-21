@@ -26,10 +26,10 @@ export const changePassword = async (req: Request,res: Response) => {
         let checkPassword = await bcrypt.compare(password, req.admin.password);
         
         if (!checkPassword) {
-            return res.json({message: 'Incorrect current password'})
+            return res.status(500).json({message: 'Incorrect current password'})
         }
         if (newPassword !== confirmPassword) {
-            return res.json({message:'New password and Confirm password do not match.'})
+            return res.status(500).json({message:'New password and Confirm password do not match.'})
         }
         let hashedPassword = await bcrypt.hash(confirmPassword, 10);
         let user = await userService.updateUser(

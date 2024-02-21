@@ -15,7 +15,7 @@ export const addToFavourite = async (req:Request,res:Response) => {
         // const {cartItem} = req.body;
         let isFavourite = await favouriteService.getFavourite({cartItem: req.body.cartItem, isDelete: false});
         if(isFavourite){
-            return res.json({message: "This product is already added in favourite list"});
+            return res.status(500).json({message: "This product is already added in favourite list"});
         }
 
         let favourite = await favouriteService.createFavourite({
@@ -54,7 +54,7 @@ export const specificFavourite = async (req:Request,res:Response) => {
         const {cartItem} = req.body
         let allFavourite = await favouriteService.getPopulate({cartItem: req.body.cartItem, isDelete: false});
         if(!allFavourite){
-            return res.json({message:"No data found"})
+            return res.status(500).json({message:"No data found"})
         }
         let favourite = allFavourite.map((item: any) => ({
             _id : item._id ,
@@ -77,7 +77,7 @@ export const deleteFavourite = async (req:Request,res: Response) => {
         let isFavourite = await favouriteService.getFavourite({user: req.user._id, isDelete: false});
         isFavourite = await favouriteService.getFavourite({cartItem: req.body.cartItem, isDelete: false});
         if(!isFavourite){
-            return res.json({message: "This product does not found in your favourite list"});
+            return res.status(500).json({message: "This product does not found in your favourite list"});
         }
         isFavourite = await favouriteService.updateFavourite(
             req.body.cartItem,

@@ -43,7 +43,7 @@ export const getOrder = async (req:Request,res: Response) => {
     try {
         let getorder = await orderService.getAllOrder({user: req.user._id, isDelete: false});
         if(!getorder){
-            return res.status(401).json({message:"No Order Found!"})
+            return res.status(500).status(401).json({message:"No Order Found!"})
         }
         res.json(getorder);
     } catch (err) {

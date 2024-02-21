@@ -16,7 +16,7 @@ export const addReivew = async (req:Request,res:Response) => {
         
         let isProduct = await reviewService.getProduct({_id: req.body.cartItem, isDelete: false});
         if(!isProduct){
-            return res.json({message: "This product is not found"});
+            return res.status(500).json({message: "This product is not found"});
         }
 
         let productpath: any;
@@ -66,7 +66,7 @@ export const specificReivew = async (req:Request,res:Response) => {
         // const {cartItem} = req.body;
         let allReview = await reviewService.addPopulate({_id: req.body.cartItem, user: req.user._id, isDelete: false});
         if(!allReview){
-            return res.json({message: "user does not added review"});
+            return res.status(500).json({message: "user does not added review"});
         }
         let review = allReview.map((item: any) => ({
             _id : item._id ,
@@ -108,7 +108,7 @@ export const deleteReview = async (req:Request,res:Response) => {
         // const {reviewId} = req.body;
         let isUser = await reviewService.getReview({ _id: req.body.reviewId, user: req.user._id, isDelete: false });
         if (!isUser) {
-            return res.json({ message: 'You can not delete this review'});
+            return res.status(500).json({ message: 'You can not delete this review'});
         }
         let review = await reviewService.updateReview(
             req.body.reviewId,
