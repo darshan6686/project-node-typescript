@@ -15,10 +15,10 @@ declare global {
 export const signUp = async (req:Request,res: Response) => {
     try{
         let {name, email, password, confirmPassword, profileImage, isAdmin} = req.body;
-        let user = await userService.getUser({email: req.body.email, isDelete: false});
-        if(user){
-            return res.status(500).json({messge: "Email already exists."})
-        }
+        // let user = await userService.getUser({email: req.body.email, isDelete: false});
+        // if(user){
+        //     return res.status(500).json({messge: "Email already exists."})
+        // }
 
         if(password !== confirmPassword){
             return res.status(500).json({messge: "Passwords do not match."});
@@ -29,7 +29,7 @@ export const signUp = async (req:Request,res: Response) => {
         if(req.file){
             filepath = `${req.file.path}`;
         }
-        user = await userService.addNewUser({
+        let user = await userService.addNewUser({
             ...req.body,
             password: hashedPassword,
             confirmPassword: hashedPassword,
